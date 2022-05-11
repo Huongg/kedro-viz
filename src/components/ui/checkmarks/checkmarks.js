@@ -1,5 +1,6 @@
 import * as React from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
+import { styled } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -13,7 +14,7 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      background: 'white',
+      backgroundColor: 'white',
     },
   },
 };
@@ -37,6 +38,7 @@ export const MultipleSelectCheckmarks = ({
           input={<OutlinedInput label="Tag" />}
           renderValue={(selected) => selected.join(', ')}
           MenuProps={MenuProps}
+          style={{ background: '#dadee2' }}
         >
           {values.map((value) => (
             <MenuItem key={value} value={value}>

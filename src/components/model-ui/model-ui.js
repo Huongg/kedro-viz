@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import CommandCopier from '../ui/command-copier/command-copier';
+import LottiePlayer from 'react-lottie';
 import IconButton from '../ui/icon-button';
 import CloseIcon from '../icons/close';
-import Dropdown from '../ui/dropdown';
 import { MultipleSelectCheckmarks } from '../ui/checkmarks/checkmarks';
+import ReactCodeSinppet from 'react-code-snippet';
+import animationData from '../lotties/loading.json';
 
 import features from './mock-data/features';
 import targets from './mock-data/targets';
@@ -12,17 +13,65 @@ import modelEvaluators from './mock-data/model_evaluators';
 
 import './model-ui.css';
 
-const command = 'pip install -U kedro-viz';
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
+
+const Loading = () => {
+  return (
+    <div className="loading-wrapper">
+      <LottiePlayer
+        height={250}
+        width={250}
+        isClickToPauseDisabled
+        options={options}
+      />
+    </div>
+  );
+};
+
+const renderSnippet = (featureList, target, modelObject, modelEvaluator) => {
+  const feature =
+    featureList.length > 0
+      ? featureList.map(
+          (each) => `
+  - ${each}`
+        )
+      : `
+  -`;
+  return (
+    <ReactCodeSinppet
+      code={`features:${feature}
+
+target:
+  - ${target}
+
+model_class:
+  object: ${modelObject}
+  instantiate: False
+  
+model_evaluators:
+  r2_score:
+    object: ${modelEvaluator}`}
+    />
+  );
+};
 
 const ModelUI = ({ dismissed, setDismiss }) => {
   const [expand, setExpand] = useState(false);
+  const [loading, setLoading] = useState(false);
   // multiple choices
   const [feature, setFeature] = useState([]);
   const [target, setTarget] = useState([]);
 
   // single choice
   const [modelObject, setModelObject] = useState([]);
-  const [instantiate, setInstantiate] = useState([]);
+  // const [instantiate, setInstantiate] = useState([]);
   const [modelEvaluator, setModelEvaluator] = useState([]);
 
   const handleFeaturesChange = (event) => {
@@ -55,15 +104,15 @@ const ModelUI = ({ dismissed, setDismiss }) => {
     );
   };
 
-  const handleInstantiateChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setInstantiate(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
-  };
+  // const handleInstantiateChange = (event) => {
+  //   const {
+  //     target: { value },
+  //   } = event;
+  //   setInstantiate(
+  //     // On autofill we get a stringified value.
+  //     typeof value === 'string' ? value.split(',') : value
+  //   );
+  // };
 
   const handleModelEvaluatorChange = (event) => {
     const {
@@ -74,12 +123,11 @@ const ModelUI = ({ dismissed, setDismiss }) => {
       typeof value === 'string' ? value.split(',') : value
     );
   };
-
   if (expand) {
     return (
       <>
         <div className="model-ui-expanded-header">
-          <p>Parameters</p>
+          <p>Model UI</p>
 
           <div className="close-button-container">
             <IconButton
@@ -111,8 +159,8 @@ const ModelUI = ({ dismissed, setDismiss }) => {
               multiple
             />
 
-            <div className="model-ui-select-title">3. Model class:</div>
-            <div className="model-ui-select-title">Object:</div>
+            <div className="model-ui-select-title">3. Model class object:</div>
+            {/* <div className="model-ui-select-title">Object:</div> */}
             <MultipleSelectCheckmarks
               values={modelClassObjects}
               selectedValue={modelObject}
@@ -120,14 +168,14 @@ const ModelUI = ({ dismissed, setDismiss }) => {
               width={400}
               multiple={false}
             />
-            <div className="model-ui-select-title">Instantiate:</div>
+            {/* <div className="model-ui-select-title">Instantiate:</div>
             <MultipleSelectCheckmarks
               values={['true', 'false']}
               selectedValue={instantiate}
               onSelect={handleInstantiateChange}
               width={100}
               multiple={false}
-            />
+            /> */}
 
             <div className="model-ui-select-title">4. Model Evaluators:</div>
             <MultipleSelectCheckmarks
@@ -137,7 +185,19 @@ const ModelUI = ({ dismissed, setDismiss }) => {
               width={400}
               multiple={false}
             />
+
+            <div className="model-ui-select-title">
+              {renderSnippet(feature, target, modelObject, modelEvaluator)}
+            </div>
           </div>
+
+          <button
+            className="model-ui-button--run"
+            onClick={() => setLoading(true)}
+          >
+            RUN
+          </button>
+          {loading && <Loading />}
         </div>
       </>
     );
@@ -145,7 +205,7 @@ const ModelUI = ({ dismissed, setDismiss }) => {
 
   return (
     <div className="update-reminder-unexpanded">
-      <p>Parameters </p>
+      <p>Model UI</p>
       <div className="buttons-container">
         <button className="kedro" onClick={() => setExpand(true)}>
           Expand

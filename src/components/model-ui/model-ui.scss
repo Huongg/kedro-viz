@@ -48,7 +48,7 @@
 
 .model-ui-expanded-header {
   height: 48px;
-  width: 484px;
+  width: 600px;
   position: absolute;
   right: 0px;
   top: 0px;
@@ -81,16 +81,14 @@
 
 .model-ui-expanded-detail {
   height: 100vw;
-  width: 484px;
+  width: 600px;
   position: absolute;
   right: 0px;
   top: 48px;
   z-index: 2;
   background-color: var(--color-detail-bg);
 
-  // to align model-ui-checkmarks-wrapper
-  display: flex;
-  justify-content: center;
+  padding-left: 20px;
 
   p {
     padding-top: 30px;
@@ -117,7 +115,9 @@
 }
 
 .model-ui-checkmarks-wrapper {
-  width: 450px;
+  position: relative;
+
+  width: 550px;
 
   margin-top: 50px;
 
@@ -134,10 +134,28 @@
   margin: 20px 0;
 }
 
+.model-ui-button--run {
+  width: 100px;
+  height: 40px;
+
+  background: #dadee2;
+
+  border-radius: 10px;
+}
+
 .close-button {
   svg {
     width: 24px;
     height: 24px;
     fill: $color-text-dark-alt;
   }
+}
+
+.loading-wrapper {
+  width: 450px;
+  height: 450px;
+
+  position: absolute;
+  top: 15%;
+  left: 10%;
 }
