@@ -58,7 +58,11 @@ model_class:
   instantiate: False
   
 model_evaluators:
-  r2_score:
+  ${
+    modelEvaluator[0] === 'sklearn.metrics.r2_score'
+      ? `r2_score:`
+      : `mean_squared_error:`
+  }
     object: ${modelEvaluator}`}
     />
   );
@@ -116,6 +120,13 @@ const ModelUI = ({ dismissed, setDismiss, onTriggerKedroRun }) => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value
     );
+  };
+
+  const handleButtonClick = () => {
+    setLoading(true);
+    onTriggerKedroRun();
+
+    setTimeout(() => setLoading(false), 30000);
   };
   if (expand) {
     return (
@@ -185,13 +196,7 @@ const ModelUI = ({ dismissed, setDismiss, onTriggerKedroRun }) => {
             </div>
           </div>
 
-          <button
-            className="model-ui-button--run"
-            onClick={() => {
-              setLoading(true);
-              onTriggerKedroRun();
-            }}
-          >
+          <button className="model-ui-button--run" onClick={handleButtonClick}>
             Trigger Kedro Run
           </button>
           {loading && <Loading />}

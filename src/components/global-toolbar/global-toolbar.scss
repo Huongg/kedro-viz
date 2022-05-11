@@ -51,3 +51,15 @@
 .pipeline-global-routes-toolbar a.active .pipeline-menu-button--link svg {
   opacity: 1;
 }
+
+.pipeline-menu-button--experiments {
+  position: relative;
+}
+
+.pipeline-menu-button--notification {
+  position: absolute;
+
+  right: 0;
+
+  z-index: 2;
+}

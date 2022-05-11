@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import LottiePlayer from 'react-lottie';
 import { toggleSettingsModal, toggleTheme } from '../../actions';
 import ExperimentsIcon from '../icons/experiments';
 import IconButton from '../ui/icon-button';
@@ -9,7 +10,18 @@ import SettingsIcon from '../icons/settings';
 import ThemeIcon from '../icons/theme';
 import TreeIcon from '../icons/tree';
 
+import animationData from '../lotties/bell-notification.json';
+
 import './global-toolbar.css';
+
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+};
 
 /**
  * Main controls for filtering the chart data
@@ -43,10 +55,18 @@ export const GlobalToolbar = ({
             />
           </NavLink>
           <NavLink exact to={{ pathname: '/experiment-tracking' }}>
+            <div className="pipeline-menu-button--notification">
+              <LottiePlayer
+                height={20}
+                width={20}
+                isClickToPauseDisabled
+                options={options}
+              />
+            </div>
             <IconButton
               ariaLabel={'View your experiments'}
               className={
-                'pipeline-menu-button--large pipeline-menu-button--link'
+                'pipeline-menu-button--large pipeline-menu-button--link pipeline-menu-button--experiments'
               }
               disabled={false}
               icon={ExperimentsIcon}
