@@ -1,6 +1,7 @@
 import { TOGGLE_GRAPH_LOADING } from '../actions/graph';
 import { TOGGLE_PIPELINE_LOADING } from '../actions/pipelines';
 import { TOGGLE_NODE_DATA_LOADING } from '../actions/nodes';
+import { TOGGLE_RUN_LOADING } from '../actions/kedro-run';
 
 function loadingReducer(loadingState = {}, action) {
   switch (action.type) {
@@ -19,6 +20,12 @@ function loadingReducer(loadingState = {}, action) {
     case TOGGLE_NODE_DATA_LOADING: {
       return Object.assign({}, loadingState, {
         node: action.loading,
+      });
+    }
+
+    case TOGGLE_RUN_LOADING: {
+      return Object.assign({}, loadingState, {
+        run: action.loading,
       });
     }
 

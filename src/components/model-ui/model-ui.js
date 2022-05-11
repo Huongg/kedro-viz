@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import LottiePlayer from 'react-lottie';
+import { connect } from 'react-redux';
+import { toggleKedroRun } from '../../actions/kedro-run';
 import IconButton from '../ui/icon-button';
 import CloseIcon from '../icons/close';
 import { MultipleSelectCheckmarks } from '../ui/checkmarks/checkmarks';
@@ -62,7 +64,7 @@ model_evaluators:
   );
 };
 
-const ModelUI = ({ dismissed, setDismiss }) => {
+const ModelUI = ({ dismissed, setDismiss, onTriggerKedroRun }) => {
   const [expand, setExpand] = useState(false);
   const [loading, setLoading] = useState(false);
   // multiple choices
@@ -73,6 +75,8 @@ const ModelUI = ({ dismissed, setDismiss }) => {
   const [modelObject, setModelObject] = useState([]);
   // const [instantiate, setInstantiate] = useState([]);
   const [modelEvaluator, setModelEvaluator] = useState([]);
+
+  // const query = `feature: ${feature}, target: ${target}, modelObject: ${modelObject}, instantiate: 'false', modelEvaluator: ${modelEvaluator}`;
 
   const handleFeaturesChange = (event) => {
     const {
@@ -103,16 +107,6 @@ const ModelUI = ({ dismissed, setDismiss }) => {
       typeof value === 'string' ? value.split(',') : value
     );
   };
-
-  // const handleInstantiateChange = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setInstantiate(
-  //     // On autofill we get a stringified value.
-  //     typeof value === 'string' ? value.split(',') : value
-  //   );
-  // };
 
   const handleModelEvaluatorChange = (event) => {
     const {
@@ -193,9 +187,12 @@ const ModelUI = ({ dismissed, setDismiss }) => {
 
           <button
             className="model-ui-button--run"
-            onClick={() => setLoading(true)}
+            onClick={() => {
+              setLoading(true);
+              onTriggerKedroRun();
+            }}
           >
-            RUN
+            Trigger Kedro Run
           </button>
           {loading && <Loading />}
         </div>
@@ -218,4 +215,12 @@ const ModelUI = ({ dismissed, setDismiss }) => {
   );
 };
 
-export default ModelUI;
+export const mapStateToProps = (state) => ({});
+
+export const mapDispatchToProps = (dispatch) => ({
+  onTriggerKedroRun: (event) => {
+    dispatch(toggleKedroRun());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModelUI);

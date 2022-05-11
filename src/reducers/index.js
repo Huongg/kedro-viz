@@ -63,6 +63,7 @@ const combinedReducer = combineReducers({
   visible,
   // These props don't have any actions associated with them
   display: createReducer(null),
+  runConfig: createReducer(null),
   dataSource: createReducer(null),
   edge: createReducer({}),
   // These props have very simple non-nested actions

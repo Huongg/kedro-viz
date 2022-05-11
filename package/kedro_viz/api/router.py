@@ -32,10 +32,10 @@ async def main():
     return get_default_response()
 
 @router.get("/kedrorun", response_model=GraphAPIResponse)
-async def main(query):
+async def kedrorun(query):
     import subprocess
     #subprocess.run(["kedro", "run", "--params test_size.key:0.3, test_size.other_key:0.4"], cwd="/workspace/test-project/modelUI")
-    subprocess.run(["kedro", "run", f"--params {query}"], cwd="/Users/susanna_wong/Documents/project-src/test-projects/modelUI")
+    subprocess.run(["kedro", "run", f"--params={query}"], cwd="/Users/susanna_wong/Documents/project-src/test-projects/modelUI")
     return get_default_response()
 
 @router.get(

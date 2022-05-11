@@ -19,7 +19,7 @@ export const arrayToObject = (array, callback) => {
  * @param {string} type Data type
  * @param {string=} id Endpoint identifier e.g. pipeline ID
  */
-export const getUrl = (type, id) => {
+export const getUrl = (type, id, query) => {
   switch (type) {
     case 'main':
       return [pathRoot, 'main'].join('/');
@@ -33,6 +33,12 @@ export const getUrl = (type, id) => {
         throw new Error('No node ID provided');
       }
       return [pathRoot, 'nodes', id].join('/');
+    case 'kedrorun':
+      if (query) {
+        return [pathRoot, `kedrorun?query=${query}`].join('/');
+      }
+      return [pathRoot, 'kedrorun'].join('/');
+
     default:
       throw new Error('Unknown URL type');
   }

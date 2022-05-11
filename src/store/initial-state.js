@@ -20,6 +20,7 @@ export const createInitialState = () => ({
     graph: false,
     pipeline: false,
     node: false,
+    run: false,
   },
   visible: {
     graph: true,
@@ -42,6 +43,12 @@ export const createInitialState = () => ({
     expandAllPipelines: false,
   },
   zoom: {},
+  runConfig: {
+    features: ['engines', 'crew'],
+    targetVariable: 'price',
+    modelClass: 'sklearn.linear_model.LinearRegression',
+    modelEvaluators: 'sklearn.metrics.r2_score',
+  },
 });
 
 /**
@@ -135,6 +142,11 @@ const getInitialState = (props = {}) => {
     props.data !== 'json',
     expandAllPipelines
   );
+
+  console.log('state', {
+    ...nonPipelineState,
+    ...pipelineState,
+  });
 
   return {
     ...nonPipelineState,
